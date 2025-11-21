@@ -2,18 +2,6 @@
 
 Automated system for claiming Xahau rewards using Hooks and CronSet transactions. This project provides tools to calculate, schedule, and automate ClaimReward transactions on the Xahau network.
 
-## 📋 Table of Contents
-
-- [Features](#features)
-- [Prerequisites](#prerequisites)
-- [Installation](#installation)
-- [Project Structure](#project-structure)
-- [Usage](#usage)
-- [Configuration](#configuration)
-- [Important Constants](#important-constants)
-- [How It Works](#how-it-works)
-- [Security Considerations](#security-considerations)
-- [License](#license)
 
 ## ✨ Features
 
