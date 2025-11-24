@@ -1,0 +1,14 @@
+{
+  "publishers": [
+    {
+      "username": "silkjaer",
+      "verifiedAt": "2025-11-24T14:13:01.514Z"
+    }
+  ],
+  "maintainers": [
+    "github:Silkjaer"
+  ],
+  "allowedOrgs": [
+    "xahau-hookstore"
+  ]
+}
