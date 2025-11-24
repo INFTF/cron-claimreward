@@ -1,0 +1,102 @@
+{
+    "manifestVersion": "1",
+    "name": "cron-claimreward",
+    "version": "1.0.0",
+    "description": "Auto-claim rewards on Xahau with Cron and Hooks",
+    "publisher": "rNybLYJ4koM8PF3dJbyUZhrgYntGxf1nEk",
+    "repo": "https://github.com/INFTF/cron-claimreward",
+    "license": "MIT",
+    "networks": [
+      "xahau-testnet"
+    ],
+    "roles": {
+      "account": {
+        "label": "Account",
+        "description": "The account the hook is installed on and will claim rewards automatically"
+      }
+    },
+    "hooks": [
+      {
+        "id": "main",
+        "artifact": {
+          "toolchain": "hooks-c",
+          "source_path": "ClaimReward.c"
+        },
+        "HookOn": [
+          "CRON"
+        ],
+        "HookCanEmit": [
+          "CLAIMREWARD"
+        ],
+        "abi": {},
+        "HookParameters": [],
+        "HookNamespace": "D2B21C51EC3F00C373C2D76278CC1B73D4510D3E1C41BB4847C5C448DB4E21FE",
+        "postInstallSettings": [
+          {
+            "name": "New cron schedule",
+            "description": "Set a new release schedule, overriding the existing or expired schedule set during installation. It is planned to run every 30 days, 3 hours, 13 minutes (Regular claim interval + 1 hour safety margin), starting from the start date and time you provided. And it will repeat 256 times, which is the maximum number of times a cron-schedule can repeat on Xahau.",
+            "TransactionType": "CronSet",
+            "userConfig": {
+              "StartTime": {
+                "label": "Start date and time",
+                "encoding": "uint32",
+                "required": true,
+                "inputType": "datetime",
+                "description": "Start time for the cron schedule. It should be the next date and time your account is ready to claim rewards."
+              }
+            },
+            "payload": {
+              "StartTime": "{{StartTime}}",
+              "RepeatCount": 256,
+              "DelaySeconds": 2603580
+            }
+          }
+        ]
+      }
+    ],
+    "install": [
+      {
+        "TransactionType": "AccountSet",
+        "description": "Set the “asfTshCollect” flag on the account, which is required for the hook to trigger on cron schedules",
+        "required": true,
+        "role": "account",
+        "payload": {
+          "SetFlag": 11
+        }
+      },
+      {
+        "TransactionType": "SetHook",
+        "description": "This installs the hook to your account, ready to run ClaimReward transactions on a schedule you define in the next step.",
+        "required": true,
+        "role": "account",
+        "hookIds": [
+          "main"
+        ],
+        "hookFlags": {
+          "main": [
+            "hsfCOLLECT"
+          ]
+        }
+      },
+      {
+        "TransactionType": "CronSet",
+        "description": "Set the release schedule. It is planned to run every 30 days, 3 hours, 13 minutes (Regular claim interval + 1 hour safety margin), starting from the start date and time you provided. And it will repeat 256 times, which is the maximum number of times a cron-schedule can repeat on Xahau.",
+        "required": true,
+        "role": "account",
+        "payload": {
+          "StartTime": "{{StartTime}}",
+          "RepeatCount": 256,
+          "DelaySeconds": 2603580
+        }
+      }
+    ],
+    "userConfig": {
+      "StartTime": {
+        "label": "Start date and time",
+        "encoding": "uint32",
+        "required": true,
+        "inputType": "datetime",
+        "description": "Start time for the cron schedule. It should be the next date and time your account is ready to claim rewards."
+      }
+    }
+  }
